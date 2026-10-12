@@ -1,0 +1,23 @@
+name: Offline Protocol Checks
+on:
+  push:
+  pull_request:
+jobs:
+  protocol:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Install pinned stable test tooling
+        run: python -m pip install -r requirements-test.txt
+      - name: Check Python syntax
+        run: python -m compileall -q contracts tests scripts
+      - name: Preflight
+        run: python scripts/preflight.py
+      - name: Run offline protocol suite
+        run: python -m pytest -q tests/test_merit_circuit.py
+      - name: Run GenLayer Direct Mode suite
+        run: python -m pytest -q tests/direct/
+  # Direct Mode is in-memory; it does not claim Studionet or multi-validator proof.
