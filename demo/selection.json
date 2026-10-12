@@ -3,12 +3,32 @@
   "purpose": "Rank synthetic proposals by technical feasibility and realistic ecosystem impact based only on their published documentation",
   "source_host": "raw.githubusercontent.com",
   "criteria": [
-    {"name": "Feasibility", "rubric": "Compare implementation evidence, test coverage, milestone credibility, unresolved blockers and execution scope. Do not infer missing execution evidence.", "weight": 60},
-    {"name": "Ecosystem impact", "rubric": "Compare documented downstream utility, reproducible integrations and realistic adoption evidence, not marketing claims.", "weight": 40}
+    {
+      "name": "Feasibility",
+      "rubric": "Compare implementation evidence, test coverage, milestone credibility, unresolved blockers and execution scope. Do not infer missing execution evidence.",
+      "weight": 60
+    },
+    {
+      "name": "Ecosystem impact",
+      "rubric": "Compare documented downstream utility, reproducible integrations and realistic adoption evidence, not marketing claims.",
+      "weight": 40
+    }
   ],
   "candidates": [
-    {"name": "BridgeKit", "summary": "Bounded analytics-adapter prototype with tests and limited deployments", "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/FIXTURE_COMMIT_PLACEHOLDER/fixtures/alpha.md"},
-    {"name": "TraceGarden", "summary": "Design-stage observability toolkit without a functioning end-to-end build", "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/FIXTURE_COMMIT_PLACEHOLDER/fixtures/beta.md"},
-    {"name": "SchemaRelay", "summary": "Schema exchange prototype with migration risk and demonstration integrations", "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/FIXTURE_COMMIT_PLACEHOLDER/fixtures/gamma.md"}
+    {
+      "name": "BridgeKit",
+      "summary": "Bounded analytics-adapter prototype with tests and limited deployments",
+      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5/fixtures/alpha.md"
+    },
+    {
+      "name": "TraceGarden",
+      "summary": "Design-stage observability toolkit without a functioning end-to-end build",
+      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5/fixtures/beta.md"
+    },
+    {
+      "name": "SchemaRelay",
+      "summary": "Schema exchange prototype with migration risk and demonstration integrations",
+      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5/fixtures/gamma.md"
+    }
   ]
 }
