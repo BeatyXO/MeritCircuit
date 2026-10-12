@@ -20,13 +20,13 @@
     },
     {
       "path": "BUILD_STATUS.md",
-      "sha256": "9aeea5b0a4c926ff1030e4a68f333512bb8eea5dc6d7efa6c70b38f31b59bf1e",
-      "bytes": 2566
+      "sha256": "758303a9d75761305961c1d580e1340c0c1e8a12e5516978685e5d34de2c65f0",
+      "bytes": 2721
     },
     {
       "path": "DEPLOYMENT.md",
-      "sha256": "70cf896e7accd847bfac898e21675ecf6825337c4524ce47fe973e2ab628d542",
-      "bytes": 3200
+      "sha256": "3c287bd4b5e192c1abf0bc0c37c9c24938d59e8ff5a97f6dc6efb8aedc48e087",
+      "bytes": 3202
     },
     {
       "path": "LICENSE",
@@ -45,8 +45,8 @@
     },
     {
       "path": "SUBMISSION.md",
-      "sha256": "7743f981b068735f763ba2bb3c7f9bc93bf52d9a1a9016f6446e81101fd35b97",
-      "bytes": 1158
+      "sha256": "1e4bd09a653125de996a72c9538c3669b57b72b9b5409755cf25da1a10cf7ace",
+      "bytes": 1333
     },
     {
       "path": "contracts/merit_award_gate.py",

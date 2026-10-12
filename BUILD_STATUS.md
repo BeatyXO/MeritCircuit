@@ -14,9 +14,10 @@ Observed in the local build environment:
 - `python -m compileall -q contracts tests scripts`: **PASS**.
 - `python scripts/preflight.py`: **PASS (static handoff checks only)**.
 - `python scripts/preflight.py --final`: **FAIL (expected)** because immutable public fixture commit SHA has not been pinned and no live deployment evidence exists.
-- Stable Studionet chain probe: **BLOCKED** by sandbox network denial (`WinError 10013`); no write was attempted.
-- GitHub remote read: **PASS** for `https://github.com/BeatyXO/MeritCircuit.git`; the remote is empty. Initial implementation commit and push remain pending.
-- `python scripts/check_studionet.py`: **BLOCKED** by HTTP 403 from the endpoint's direct `eth_chainId` method.
+- Direct Studionet `eth_chainId` probe: **BLOCKED** by HTTP 403; SDK-based identity read below succeeded. No write was attempted.
+- Initial implementation and fixtures are committed locally: `233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5`.
+- GitHub push: **BLOCKED**. `git push -u origin main` returned `Permission to BeatyXO/MeritCircuit.git denied to Ifem1` (HTTP 403). A local commit exists; no push was claimed.
+- Fixture pinning: **PENDING** because the real fixture commit SHA must exist on GitHub before `pin_fixture_commit.py` may run.
 - `python scripts/live_studionet.py --verify-only`: **PASS**; stable SDK confirmed effective RPC `https://studio.genlayer.com/api` and actual chain ID `61999` (read-only, no signed transaction).
 - Live writes: **NOT ATTEMPTED**; neither the deployer nor separate unauthorized-account key is present in the environment.
 - Direct Mode reported a Windows cleanup defect in `genlayer-test 0.29.2`; `tests/direct/conftest.py` defers those temporary-file unlinks until runner teardown.
