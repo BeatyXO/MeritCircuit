@@ -101,7 +101,9 @@ class SelectionSealed(gl.Event):
 
 
 class ComparisonRecorded(gl.Event):
-    def __init__(self, selection_id: u256, left_id: u32, right_id: u32, criterion_id: u32, /, **blob): ...
+    # GenVM permits at most three indexed arguments (plus the event topic).
+    # Keep criterion/verdict/hash in the non-indexed event blob.
+    def __init__(self, selection_id: u256, left_id: u32, right_id: u32, /, **blob): ...
 
 
 class RankingFinalized(gl.Event):
@@ -462,8 +464,9 @@ class MeritCircuit(gl.Contract):
                                "attempt": attempts, "result": outcome}))
         self.comparisons[ck] = c
         self.assessment_history[key(selection_id, left_id, right_id, criterion_id, attempts)] = c
-        ComparisonRecorded(selection_id, left_id, right_id, criterion_id,
-                           verdict=u8(verdict), assessment_hash=c.assessment_hash).emit()
+        ComparisonRecorded(selection_id, left_id, right_id,
+                           criterion_id=u32(criterion_id), verdict=u8(verdict),
+                           assessment_hash=c.assessment_hash).emit()
         return u8(verdict)
 
     @gl.public.write

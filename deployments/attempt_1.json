@@ -1,0 +1,88 @@
+{
+  "attempt": "initial Studionet lifecycle; superseded after stable GenVM exposed an event-encoding defect",
+  "network": {
+    "alias": "studionet",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api"
+  },
+  "contracts": {
+    "merit_circuit": {
+      "address": "0xB82f0F6885E26e2e09e8F388EaEef7fD76c08f1A",
+      "deploy_tx": "0x7f71c1d76ac840f40ad96bb50b040617b36ff90610b4fb0dce65c96916bd8bbc"
+    },
+    "merit_award_gate": {
+      "address": "0x515b0DeDA99098fbEf48C9c672c255a8f2aF8c56",
+      "deploy_tx": "0x52abfdce05f6438021a157e5373ea9f02c6e38e394a6a4db254f2afed7e75b7c"
+    }
+  },
+  "transactions": {
+    "candidate_1": {
+      "hash": "0xd76d77ab61a2c15b77e5542b1f20739b99cef4c579c054eb54d505cacecc0a9b",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "candidate_2": {
+      "hash": "0xa13fa04db85e265bbd28be3e83ec6cb886037ef9e891d59d12f85d25ab55bb10",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "candidate_3": {
+      "hash": "0x64faf55ec4f8b4f1e23fdfc33a547c4d1ebac2330630aba48baf5ce86d804938",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "criterion_1": {
+      "hash": "0x35ed33eb904795677ade65e0e4b64e5e55947717c40d96376721669e0da0d09a",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "criterion_2": {
+      "hash": "0x9f71b6f87aef5c38fb8487134ecff376ac5efaca65620b63f4d7f71aecfc89c4",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "deploy_merit_award_gate": {
+      "hash": "0x52abfdce05f6438021a157e5373ea9f02c6e38e394a6a4db254f2afed7e75b7c",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "deploy_merit_circuit": {
+      "hash": "0x7f71c1d76ac840f40ad96bb50b040617b36ff90610b4fb0dce65c96916bd8bbc",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "seal_selection": {
+      "hash": "0x06146766576afb158b6d9c5a21ae5971d03393e8974aa434bed4c60274af97f9",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "selection_create": {
+      "hash": "0xa7ef7e02eacff6b6a7f1cf4c2846829308475494cf7b0bf040a26bb70907ef6f",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    }
+  },
+  "failed_transactions": {
+    "deploy_merit_award_gate": [
+      {
+        "execution": "FINISHED_WITH_ERROR",
+        "hash": "0xe3bc837824aba194d5f5322047c2b9d7e1d5835d5e1de83c5c01610bbb4f8758",
+        "receipt": {
+          "hash": "0xe3bc837824aba194d5f5322047c2b9d7e1d5835d5e1de83c5c01610bbb4f8758",
+          "recipient": "0xA0845E055CcaDB585f53d54FE9eaB57199eD69BF",
+          "result_name": "MAJORITY_AGREE",
+          "status_name": "FINALIZED"
+        },
+        "status": "FINALIZED"
+      }
+    ]
+  },
+  "incomplete_assessment": {
+    "tx_hash": "0xbef1d4bc1943604bb2be7f27e2fc0b91afa1a66470c319daefede35d8e88ac30",
+    "status": "FINALIZED contract error; state change reverted",
+    "observed_runtime_error": "SystemError: 2: inval while emitting ComparisonRecorded",
+    "diagnosis": "four indexed event arguments exceeded the GenVM event topic limit; corrected by indexing selection/left/right and moving criterion_id into the event data blob"
+  },
+  "outcome": "superseded; no ranking or award was finalized from this instance",
+  "explorer": "https://explorer-studio.genlayer.com/tx/"
+}

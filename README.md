@@ -55,7 +55,7 @@ python -m pytest -q tests/test_merit_circuit.py
 python -m pytest -q tests/direct/
 ```
 
-The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The recorded local results are 39 offline passes and 6 Direct Mode passes. Full lifecycle and typed cross-contract consumer proof require actual Studionet writes; no deployment evidence is claimed in this checkout.
+The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The recorded local results are 39 offline protocol passes, 6 Direct Mode passes, and 4 stable-SDK receipt normalization tests. Initial Studionet execution uncovered issues recorded in `deployments/attempt_1.json`; the corrected version requires a fresh deployment before claiming lifecycle completion.
 
 ## Immutable fixture workflow
 
@@ -78,4 +78,4 @@ The pinned demo JSON is committed and pushed. These URLs identify repository con
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/INVARIANTS.md`](docs/INVARIANTS.md), [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md), [`docs/REVIEWER_DEMO.md`](docs/REVIEWER_DEMO.md).
 
-The full Studionet run requires the two signing keys documented in [`DEPLOYMENT.md`](DEPLOYMENT.md). The SDK read-only identity check confirmed the stable alias and chain ID. Run it again immediately before any live write, then use `scripts/live_studionet.py --run` only on the stable alias. This repository remains incomplete for submission until the live evidence is complete.
+The full Studionet run uses the two authorized test-wallet keys in the process environment as described in [`DEPLOYMENT.md`](DEPLOYMENT.md). The SDK identity check confirmed the stable alias and chain ID; the lifecycle script repeats that check immediately before every live write. This repository remains incomplete for submission until corrected-version lifecycle evidence is complete.

@@ -89,6 +89,47 @@ def wait_finalized(client, tx_hash):
     return receipt
 
 
+def execution_result(receipt):
+    """Normalize the stable SDK receipt shape without guessing success.
+
+    Recent RPCs expose ``tx_execution_result_name`` directly. The stable
+    Studionet RPC currently used here returns the consensus transaction view
+    instead: ``result_name`` plus a ``consensus_data.leader_receipt`` list.
+    Require finalized majority agreement and a successful leader return in
+    that shape; a finalized status alone is never sufficient.
+    """
+    direct = as_text(receipt.get("tx_execution_result_name"))
+    if direct:
+        return direct
+    if as_text(receipt.get("result_name")) != "MAJORITY_AGREE":
+        return None
+    consensus = receipt.get("consensus_data")
+    if not isinstance(consensus, dict):
+        return None
+    leaders = consensus.get("leader_receipt")
+    if not isinstance(leaders, list):
+        return None
+    leader = next((item for item in leaders
+                   if isinstance(item, dict) and item.get("mode") == "leader"), None)
+    if leader is None:
+        return None
+    outcome = as_text(leader.get("execution_result"))
+    leader_result = leader.get("result")
+    result_status = as_text(leader_result.get("status")) if isinstance(leader_result, dict) else None
+    if outcome == "SUCCESS" and result_status == "return":
+        return "FINISHED_WITH_RETURN"
+    if outcome == "ERROR" and result_status in ("contract_error", "error"):
+        return "FINISHED_WITH_ERROR"
+    return None
+
+
+def receipt_summary(receipt):
+    """Keep lifecycle errors useful without dumping full contract source."""
+    return {key: receipt.get(key) for key in
+            ("hash", "status_name", "tx_execution_result_name", "result_name", "recipient")
+            if key in receipt}
+
+
 def write_once(client, state, label, address, function_name, args, account=None,
                expect_success=True):
     """Submit once, persist the hash immediately, resume pending receipts safely."""
@@ -106,12 +147,12 @@ def write_once(client, state, label, address, function_name, args, account=None,
         pending[label] = {"hash": tx_hash, "function": function_name}
         save_manifest(state)
     receipt = wait_finalized(client, tx_hash)
-    execution = as_text(receipt.get("tx_execution_result_name"))
+    execution = execution_result(receipt)
     succeeded = execution == "FINISHED_WITH_RETURN"
     if succeeded != expect_success:
         raise RuntimeError(
             f"{label} finalized with unexpected execution result {execution!r}; "
-            f"receipt={receipt!r}"
+            f"receipt={receipt_summary(receipt)!r}"
         )
     record = {"hash": tx_hash, "status": as_text(receipt.get("status_name")),
               "execution": execution, "receipt": json_safe(dict(receipt))}
@@ -129,16 +170,33 @@ def deploy_once(client, state, contract_key, source_path, args=None):
     pending = state.setdefault("pending_transactions", {})
     if label in pending:
         receipt = wait_finalized(client, pending[label]["hash"])
+        execution = execution_result(receipt)
+        if execution != "FINISHED_WITH_RETURN":
+            # A finalized contract error cannot be repaired by polling the
+            # same transaction. Preserve the evidence, clear the checkpoint,
+            # and submit one corrected deployment below.
+            failed = state.setdefault("failed_transactions", {}).setdefault(label, [])
+            failed.append({"hash": pending[label]["hash"], "status": "FINALIZED",
+                           "execution": execution,
+                           "receipt": receipt_summary(receipt)})
+            pending.pop(label)
+            save_manifest(state)
+            receipt = None
     else:
+        receipt = None
+    if receipt is None:
         confirm_network(client)
         code = source_path.read_bytes()
         tx_hash = tx_hash_text(client.deploy_contract(code=code, args=args or []))
         pending[label] = {"hash": tx_hash, "contract": str(source_path.relative_to(ROOT))}
         save_manifest(state)
         receipt = wait_finalized(client, tx_hash)
-    execution = as_text(receipt.get("tx_execution_result_name"))
+    execution = execution_result(receipt)
     if execution != "FINISHED_WITH_RETURN":
-        raise RuntimeError(f"{label} finalized unsuccessfully: {receipt!r}")
+        raise RuntimeError(
+            f"{label} finalized unsuccessfully: execution={execution!r}, "
+            f"receipt={receipt_summary(receipt)!r}"
+        )
     address = receipt.get("recipient")
     decoded = receipt.get("tx_data_decoded") or {}
     if not address:
@@ -169,8 +227,9 @@ def run_lifecycle(client, account, state):
             raise RuntimeError(f"demo is missing immutable fixture URL {filename}")
 
     merit = deploy_once(client, state, "merit_circuit", ROOT / "contracts" / "merit_circuit.py")
+    from genlayer_py.types.calldata import CalldataAddress
     gate = deploy_once(client, state, "merit_award_gate", ROOT / "contracts" / "merit_award_gate.py",
-                       args=[merit])
+                       args=[CalldataAddress(merit)])
 
     # The first contract created by this clean deployment is selection 1.
     sid = int(state.get("selection_id") or 1)
