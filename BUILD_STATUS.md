@@ -1,26 +1,17 @@
-# Handoff build status (2026-10-12)
+# Build status (2026-10-13)
 
-**Status: IMPLEMENTED AND TESTED LOCALLY — NOT DEPLOYED OR PUSHED.**
+**Implementation and local tests complete; stable Studionet lifecycle not deployed.** The requested repository is pushed to `https://github.com/BeatyXO/MeritCircuit` on `main`. The fixture-containing commit is `233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5`; its three raw GitHub URLs returned HTTP 200. The demo selection now pins those immutable commit URLs, committed in `5c6ac8114fd41bcc4865476dafaa19b36b3bddbc`.
 
-At ZIP creation, the package contains two Intelligent Contracts, a bounded deterministic pairwise tournament, custom independently grounded validator function, synthetic public-web fixture inputs (requiring immutable Git commit pinning), unit tests, a real GenLayer Direct Mode test module requiring optional `gltest`, CI, configuration, and a strict live-evidence manifest.
+Observed results:
 
-Observed in the local build environment:
-
-- `python scripts/preflight.py`: **PASS** (static preflight only).
+- `python scripts/preflight.py`: **PASS** (static handoff checks).
 - `python -m compileall -q contracts tests scripts`: **PASS**.
-- `python -m pytest -q tests/test_merit_circuit.py`: **39 passed**. These offline protocol tests use a mock GenLayer harness.
-- `python -m pytest -q tests/direct/`: **6 passed** with `genlayer-test 0.29.2`, `genlayer-py 0.16.3`, and stable GenVM runner `v0.2.16`. These are Direct Mode tests, not multi-validator network consensus.
-- Direct Mode independently re-ran the verifier and rejected a changed semantic result and forged leader evidence.
-- `python -m compileall -q contracts tests scripts`: **PASS**.
-- `python scripts/preflight.py`: **PASS (static handoff checks only)**.
-- `python scripts/preflight.py --final`: **FAIL (expected)** because immutable public fixture commit SHA has not been pinned and no live deployment evidence exists.
-- Direct Studionet `eth_chainId` probe: **BLOCKED** by HTTP 403; SDK-based identity read below succeeded. No write was attempted.
-- Initial implementation and fixtures are committed locally: `233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5`.
-- GitHub push: **BLOCKED**. `git push -u origin main` returned `Permission to BeatyXO/MeritCircuit.git denied to Ifem1` (HTTP 403). A local commit exists; no push was claimed.
-- Fixture pinning: **PENDING** because the real fixture commit SHA must exist on GitHub before `pin_fixture_commit.py` may run.
-- `python scripts/live_studionet.py --verify-only`: **PASS**; stable SDK confirmed effective RPC `https://studio.genlayer.com/api` and actual chain ID `61999` (read-only, no signed transaction).
-- Live writes: **NOT ATTEMPTED**; neither the deployer nor separate unauthorized-account key is present in the environment.
-- Direct Mode reported a Windows cleanup defect in `genlayer-test 0.29.2`; `tests/direct/conftest.py` defers those temporary-file unlinks until runner teardown.
-- `scripts/live_studionet.py` is implemented against the installed stable SDK API. It has not been run against the RPC and does not constitute deployment evidence.
+- `python -m pytest -q tests/test_merit_circuit.py`: **39 passed**.
+- `python -m pytest -q tests/direct/`: **6 passed** using `genlayer-test 0.29.2`, `genlayer-py 0.16.3`, and GenVM runner `v0.2.16`. Direct Mode independently re-evaluated the verifier and rejected altered semantic results and forged leader evidence.
+- `python -m pytest -q`: **45 passed**.
+- `python scripts/live_studionet.py --verify-only`: **PASS**, stable SDK confirmed effective RPC `https://studio.genlayer.com/api` and actual chain ID `61999`. Read-only; no transaction was signed or broadcast.
+- `python scripts/preflight.py --final`: **FAIL**, correctly, because live deployment addresses and finalized lifecycle evidence are absent.
 
-The agent must run real Direct Mode and Studionet tests before claiming review readiness. Details in `MERITCIRCUIT_AGENT_PROMPT.md`.
+No contract has been deployed and no live lifecycle, consensus comparison, ranking, typed cross-contract consumer call, rejection transaction, or explorer evidence is claimed. `GENLAYER_PRIVATE_KEY` and `GENLAYER_UNAUTHORIZED_PRIVATE_KEY` were both absent, so live writes were not attempted. The pinned stable SDK also lacks `estimate_transaction_fees`; deployment instructions use its stable transaction API rather than switching networks or SDK channels.
+
+The complete live acceptance criteria remain in `MERITCIRCUIT_AGENT_PROMPT.md` and `DEPLOYMENT.md`. Do not change the required stable Studionet identity or populate the evidence manifest with unobserved results.

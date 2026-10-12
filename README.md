@@ -59,13 +59,13 @@ The offline suite uses a mock GenLayer harness; Direct Mode executes contract lo
 
 ## Immutable fixture workflow
 
-`demo/selection.json` initially contains `FIXTURE_COMMIT_PLACEHOLDER`. The agent must first push the committed fixtures, obtain the *real* 40-character fixture commit SHA, verify that `/fixtures/{alpha,beta,gamma}.md` exists at that SHA on GitHub raw, run:
+`demo/selection.json` pins `/fixtures/{alpha,beta,gamma}.md` to the pushed fixture commit `233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5`. Each immutable GitHub raw URL was verified to return HTTP 200. The workflow used to establish this pin was:
 
 ```bash
 python scripts/pin_fixture_commit.py <FULL_40_HEX_FIXTURE_COMMIT>
 ```
 
-Then commit and push the pinned demo JSON, before building the onchain demo. **Never claim to have tested these placeholder URLs.**
+The pinned demo JSON is committed and pushed. These URLs identify repository content only; they are not evidence that contract execution or an onchain demo occurred.
 
 ## Limitations explicitly acknowledged
 
@@ -78,4 +78,4 @@ Then commit and push the pinned demo JSON, before building the onchain demo. **N
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/INVARIANTS.md`](docs/INVARIANTS.md), [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md), [`docs/REVIEWER_DEMO.md`](docs/REVIEWER_DEMO.md).
 
-The full Studionet run requires public commit-pinned fixture URLs and the two signing keys documented in [`DEPLOYMENT.md`](DEPLOYMENT.md). Run the network identity check first, and use `scripts/live_studionet.py --run` only on the stable alias. This repository remains incomplete for submission until that live evidence and the GitHub push are complete.
+The full Studionet run requires the two signing keys documented in [`DEPLOYMENT.md`](DEPLOYMENT.md). The SDK read-only identity check confirmed the stable alias and chain ID. Run it again immediately before any live write, then use `scripts/live_studionet.py --run` only on the stable alias. This repository remains incomplete for submission until the live evidence is complete.

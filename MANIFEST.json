@@ -20,33 +20,8 @@
     },
     {
       "path": "BUILD_STATUS.md",
-      "sha256": "758303a9d75761305961c1d580e1340c0c1e8a12e5516978685e5d34de2c65f0",
-      "bytes": 2721
-    },
-    {
-      "path": "DEPLOYMENT.md",
-      "sha256": "3c287bd4b5e192c1abf0bc0c37c9c24938d59e8ff5a97f6dc6efb8aedc48e087",
-      "bytes": 3202
-    },
-    {
-      "path": "LICENSE",
-      "sha256": "2be8e4aff2f44d2627d8a78060d4f06cf82f2f6827b06bcf9c9762f698b4a697",
-      "bytes": 1082
-    },
-    {
-      "path": "MERITCIRCUIT_AGENT_PROMPT.md",
-      "sha256": "b7e58b74aef51ff09f5a3084a2c278c3497a2f5dc72995ede8585e2ead7fb7ce",
-      "bytes": 13858
-    },
-    {
-      "path": "README.md",
-      "sha256": "b0a7080daa305edd10ff7720497aa85cbec18b598b8f55f35503bb43e3ea4ff7",
-      "bytes": 7546
-    },
-    {
-      "path": "SUBMISSION.md",
-      "sha256": "1e4bd09a653125de996a72c9538c3669b57b72b9b5409755cf25da1a10cf7ace",
-      "bytes": 1333
+      "sha256": "965e22eaf269d1243fbe0011946c8e89db52573beb186464fe1f93c372edcbcd",
+      "bytes": 1973
     },
     {
       "path": "contracts/merit_award_gate.py",
@@ -60,8 +35,13 @@
     },
     {
       "path": "demo/selection.json",
-      "sha256": "eccb49165f2c7a3ae4eca72a915b2bb4edf265fb5fa8c072dd1aa3a3b227916b",
-      "bytes": 1386
+      "sha256": "63137e5e6731e1646a47665632f8a2a86a2219596f80a33a2408935c21e87ceb",
+      "bytes": 1582
+    },
+    {
+      "path": "DEPLOYMENT.md",
+      "sha256": "55d5de328e49966eebdd0b99204018501fe8058fdf6ef88081f4973c91db3c71",
+      "bytes": 3320
     },
     {
       "path": "deployments/studionet.json",
@@ -109,9 +89,24 @@
       "bytes": 249
     },
     {
+      "path": "LICENSE",
+      "sha256": "2be8e4aff2f44d2627d8a78060d4f06cf82f2f6827b06bcf9c9762f698b4a697",
+      "bytes": 1082
+    },
+    {
+      "path": "MERITCIRCUIT_AGENT_PROMPT.md",
+      "sha256": "b7e58b74aef51ff09f5a3084a2c278c3497a2f5dc72995ede8585e2ead7fb7ce",
+      "bytes": 13858
+    },
+    {
       "path": "pytest.ini",
       "sha256": "2a8f27927b0d7ad58b9862815b2847abc29c11e85abe5f404cde417d024d9b37",
       "bytes": 113
+    },
+    {
+      "path": "README.md",
+      "sha256": "ef9a41f338b3ba745e3d3e1cf00d2f9f8e2dc481bc0b62667d2c1da03b7d5112",
+      "bytes": 7590
     },
     {
       "path": "requirements-test.txt",
@@ -137,6 +132,11 @@
       "path": "scripts/preflight.py",
       "sha256": "c306de412e22ea33596ec3599059266858512c09713aa9fb21317057108d16da",
       "bytes": 2894
+    },
+    {
+      "path": "SUBMISSION.md",
+      "sha256": "e1b8ef40d59a60a34ff4858713233c15bda1d1753c75999d352bf70dcb0db9dd",
+      "bytes": 1763
     },
     {
       "path": "tests/conftest.py",

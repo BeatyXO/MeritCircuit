@@ -1,11 +1,13 @@
 # Submission readiness
 
-**Implementation verified locally; submission remains incomplete.** Target remote: https://github.com/BeatyXO/MeritCircuit
+**Implementation and local tests verified; live submission evidence remains incomplete.** Repository: [BeatyXO/MeritCircuit](https://github.com/BeatyXO/MeritCircuit), branch `main`.
 
-Product: reusable pairwise qualitative ranking Intelligent Contract, plus typed, replay-protected `MeritAwardGate` consumer. No frontend, no native token payouts, no offchain ranking service.
+The reusable pairwise qualitative ranking Intelligent Contract performs consensus-backed, source-grounded criterion comparisons, constructs the complete weighted margin matrix, applies deterministic Ranked Pairs with cycle detection, and produces a hash-pinned result. `MeritAwardGate` is a typed, replay-protected downstream consumer. There is no frontend, native token payout, or offchain ranking service.
 
-Main review hook: **consensus-backed and independently grounded semantic pairwise criteria → complete weighted matrix → deterministic Ranked Pairs with cycle detection → immutable, hash-pinned result → strict-winner downstream gate**.
+The implementation and fixtures were pushed. Fixture commit: `233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5`. The demo pins all three evidence URLs to that commit. The pinned-reference commit is `5c6ac8114fd41bcc4865476dafaa19b36b3bddbc`.
 
-Completed locally: 39 offline protocol tests, 6 GenLayer Direct Mode tests, Python compilation, static preflight, and read-only confirmation of Studionet chain 61999 through the stable SDK. The initial implementation is committed locally as `233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5`. GitHub rejected the push with HTTP 403 (`Permission to BeatyXO/MeritCircuit.git denied to Ifem1`), so the fixture commit cannot yet be pinned. Live deployment also remains pending because signing keys are not configured. Review `docs/REVIEWER_DEMO.md`, `DEPLOYMENT.md`, and `BUILD_STATUS.md` for exact evidence and remaining gates.
+Verified locally: 39 offline protocol tests, 6 GenLayer Direct Mode tests, 45 total pytest tests, Python compilation, and static preflight. Direct Mode independently re-evaluates adversarial leader outputs. The stable SDK read-only check confirmed `studionet`, RPC `https://studio.genlayer.com/api`, and actual chain ID `61999`.
 
-Do not provide fake explorer URLs or make a score guarantee. Code quality and onchain validity must be established independently.
+No Studionet deployments or live writes are recorded. The deployer and separate unauthorized-account signing keys were absent, so there is no actual consensus-backed comparison, certified winner, typed onchain consumer success, rejection evidence, transaction, address, or explorer proof. `python scripts/preflight.py --final` therefore correctly fails until those observations exist. Do not report a live winner or deployment until then.
+
+See `docs/REVIEWER_DEMO.md`, `DEPLOYMENT.md`, and `BUILD_STATUS.md` for commands, current evidence, and outstanding live acceptance criteria.
