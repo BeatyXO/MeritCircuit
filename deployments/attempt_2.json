@@ -1,0 +1,95 @@
+{
+  "attempt": "corrected-event deployment, superseded after a real source-grounding/order-invariance INDETERMINATE result exhausted the configured retry cap",
+  "network": {
+    "alias": "studionet",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api"
+  },
+  "contracts": {
+    "merit_circuit": {
+      "address": "0x03Ad01B97C4af5aa43d1a7508b3a231062873245",
+      "deploy_tx": "0x17d207390588f925da2f53b968ef75443dc78649cc36c9a8a3705982b4868e5c"
+    },
+    "merit_award_gate": {
+      "address": "0x1fC42e19DA5180b828fF05358b6472a785eD6014",
+      "deploy_tx": "0x6ecfe83c975607ce2768704695c14f6cf516d709332bd79cd39715006e0552bc"
+    }
+  },
+  "selection": {
+    "selection_id": 1,
+    "definition_hash": "98188e8cf9b721d1a8f514700e23c34fc797b7dd8c1bcf011bb97042d379a656",
+    "create_tx": null,
+    "seal_tx": null
+  },
+  "transactions": {
+    "assessment_1_2_1_1": {
+      "hash": "0xdd55317bf09ca3b702731ee1bb83ef787cde27e96582c6d955fada4ddc51fc99",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "assessment_1_2_1_2": {
+      "hash": "0xc7520dbb166c9bb3e9ef5fa6b768baa3f0dc94a7ac4b82edda7fb865edc78e3e",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "assessment_1_2_1_3": {
+      "hash": "0x5369166d6fc281b92e430c59b9944bd8777c2300347c4409bba9a32bd8d85f6a",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "candidate_1": {
+      "hash": "0x9f10b2a60d1aba21702e1cd9f783562ead1833e58eb47c1cf0d970eb9b97d313",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "candidate_2": {
+      "hash": "0xbcfbb6c6491da2a697597e651ff49321aa14d8f2122a1c2a458f21f7560def48",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "candidate_3": {
+      "hash": "0x9fd56de4f49c535b80efadd29e36452c82d2a2a970f71cd04a60c65f243296a0",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "criterion_1": {
+      "hash": "0xfe2282f19813f158c2b5b5ae92008b16cd09d26e0007e4aba30c1434a48b3170",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "criterion_2": {
+      "hash": "0xd51e76b83bc70cad856fd8ef195852b92adaeb9182ca6ab60de72eb34429c7a4",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "deploy_merit_award_gate": {
+      "hash": "0x6ecfe83c975607ce2768704695c14f6cf516d709332bd79cd39715006e0552bc",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "deploy_merit_circuit": {
+      "hash": "0x17d207390588f925da2f53b968ef75443dc78649cc36c9a8a3705982b4868e5c",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "seal_selection": {
+      "hash": "0xa21c69e4f5ded8eea9fc22007eca1a8f3a4090921edf5620411b311600eb9e65",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "selection_create": {
+      "hash": "0x6aa4ba378a7ead6b5bff7d4f9a2f316173676513b025e7fd822134636f0b0dda",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    }
+  },
+  "assessment_count": null,
+  "result": "no complete pair matrix or ranking; no consumer call attempted",
+  "indeterminate_record": {
+    "attempts": 3,
+    "verdict": "INDETERMINATE",
+    "reason": "source, grounding, or order-invariance check failed",
+    "assessment_hash": "f2790ed45e6cb32b2650fa60e61a986bd0cf522ae09a48f32d03cdf0c9f64ece"
+  },
+  "next_change": "make mirror-order instructions explicit and record safe, specific failure categories; bounded three-attempt rule remains unchanged"
+}

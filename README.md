@@ -55,7 +55,7 @@ python -m pytest -q tests/test_merit_circuit.py
 python -m pytest -q tests/direct/
 ```
 
-The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The recorded local results are 39 offline protocol passes, 6 Direct Mode passes, and 4 stable-SDK receipt normalization tests. Initial Studionet execution uncovered issues recorded in `deployments/attempt_1.json`; the corrected version requires a fresh deployment before claiming lifecycle completion.
+The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The recorded local results are 39 offline protocol passes, 6 Direct Mode passes, and 5 stable-SDK/diagnostic tests. Two Studionet attempts are archived in `deployments/attempt_1.json` and `deployments/attempt_2.json`; neither produced a completed ranking, and another fresh deployment is required for the latest prompt diagnostics.
 
 ## Immutable fixture workflow
 

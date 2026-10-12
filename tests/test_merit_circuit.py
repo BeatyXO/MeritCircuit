@@ -97,6 +97,25 @@ def test_mirrored_order_inconsistency_is_indeterminate(env, selection):
         c.assess_pair_criterion(sid, 1, 2, 1, h)
 
 
+def test_mirror_failure_is_diagnosed_without_accepting_biased_vote(env, selection):
+    sid, _ = selection
+    c = env.contract
+    left = c._candidate(sid, 1)
+    right = c._candidate(sid, 2)
+    criterion = c._criterion(sid, 1)
+    left_quote = env.web.docs[left.evidence_url][:32]
+    right_quote = env.web.docs[right.evidence_url][:32]
+    env.llm.overrides = [
+        json.dumps({"verdict": "LEFT", "reason": "left evidence stronger",
+                    "left_quote": left_quote, "right_quote": right_quote}),
+        json.dumps({"verdict": "LEFT", "reason": "same side after swap",
+                    "left_quote": right_quote, "right_quote": left_quote}),
+    ]
+    result = env.merit.classify_independently(left, right, criterion)
+    assert result["verdict"] == env.merit.INDETERMINATE
+    assert result["reason"] == "mirrored verdict inconsistency"
+
+
 def test_retries_bounded_and_history_preserved(env, selection):
     sid, h = selection
     c = env.contract
@@ -300,5 +319,8 @@ def test_owner_summary_is_not_model_evidence(env, selection):
     right = env.contract._candidate(sid, 2)
     criterion = env.contract._criterion(sid, 1)
     prompt = env.merit.prompt_for(left, right, criterion, "source one", "source two", False)
+    mirrored = env.merit.prompt_for(right, left, criterion, "source two", "source one", True)
     assert "source one" in prompt and "source two" in prompt
+    assert "displayed order is arbitrary" in prompt
+    assert "extracts are swapped" in mirrored
     assert left.summary not in prompt and right.summary not in prompt

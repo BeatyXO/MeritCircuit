@@ -209,7 +209,10 @@ def prompt_for(left: Candidate, right: Candidate, criterion: Criterion,
             "Evaluate strictly and ONLY the stated rubric, not personality or popularity. "
             "Do not invent missing facts. If documents are insufficient/contradictory choose INDETERMINATE. "
             "Judge only the evidence in the two registered source extracts. Candidate names and owner summaries are withheld. "
-            "Give short exact quotes FROM EACH WEB EXTRACT grounding the decision (including a TIE); "
+            "The displayed order is arbitrary. In a mirrored check the two extracts are swapped; "
+            "re-evaluate the evidence, do not copy the prior side label. For the same underlying judgment, "
+            "a decisive LEFT/RIGHT verdict must reverse when the extracts swap; TIE and INDETERMINATE stay unchanged. "
+            "Give short verbatim contiguous substrings FROM EACH WEB EXTRACT as quotes, with no ellipses or rewriting; "
             "do not cite text from the submitted summary as independent evidence. "
             "Return ONLY JSON with exactly verdict LEFT|RIGHT|TIE|INDETERMINATE, "
             "reason, left_quote, right_quote. LEFT refers to first displayed candidate, RIGHT to second.\n"
@@ -235,18 +238,27 @@ def classify_independently(left: Candidate, right: Candidate, criterion: Criteri
         left_text = gl.nondet.web.render(left.evidence_url, mode="text")[:MAX_DOCUMENT]
         right_text = gl.nondet.web.render(right.evidence_url, mode="text")[:MAX_DOCUMENT]
         if len(left_text.strip()) < 30 or len(right_text.strip()) < 30:
-            raise ValueError("source unavailable or empty")
+            return {"verdict": INDETERMINATE, "reason": "source unavailable or too short",
+                    "left_quote": "", "right_quote": ""}
         direct = parse_vote(gl.nondet.exec_prompt(
             prompt_for(left, right, criterion, left_text, right_text, False), response_format="json"))
         swapped = parse_vote(gl.nondet.exec_prompt(
             prompt_for(right, left, criterion, right_text, left_text, True), response_format="json"))
-        if (not anchored(direct, left_text, right_text)
-            or not anchored(swapped, right_text, left_text)
-            or direct["verdict"] != reverse_vote(swapped["verdict"])):
-            raise ValueError("evidence or order-invariance check failed")
+        if (direct["verdict"] == INDETERMINATE
+                or swapped["verdict"] == INDETERMINATE):
+            if direct["verdict"] == swapped["verdict"] == INDETERMINATE:
+                return direct
+            return {"verdict": INDETERMINATE, "reason": "mirrored verdict inconsistency",
+                    "left_quote": "", "right_quote": ""}
+        if not anchored(direct, left_text, right_text) or not anchored(swapped, right_text, left_text):
+            return {"verdict": INDETERMINATE, "reason": "non-verbatim evidence anchor",
+                    "left_quote": "", "right_quote": ""}
+        if direct["verdict"] != reverse_vote(swapped["verdict"]):
+            return {"verdict": INDETERMINATE, "reason": "mirrored verdict inconsistency",
+                    "left_quote": "", "right_quote": ""}
         return direct
     except Exception:
-        return {"verdict": INDETERMINATE, "reason": "source, grounding, or order-invariance check failed",
+        return {"verdict": INDETERMINATE, "reason": "source or model evaluation failed",
                 "left_quote": "", "right_quote": ""}
 
 
