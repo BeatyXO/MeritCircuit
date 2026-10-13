@@ -1,5 +1,12 @@
 """Receipt normalization tests for the pinned stable GenLayer SDK lifecycle."""
-from scripts.live_studionet import execution_result, leader_error
+import pytest
+
+from scripts.live_studionet import (
+    CanceledTransaction,
+    execution_result,
+    leader_error,
+    wait_finalized,
+)
 
 
 def current_rpc_receipt(leader_outcome, result_status, result_name="MAJORITY_AGREE"):
@@ -47,3 +54,13 @@ def test_extracts_only_leader_runtime_error():
     assert leader_error({"consensus_data": {"leader_receipt": [
         {"mode": "leader", "result": {"status": "rollback", "payload": "owner only"}},
     ]}}) == "owner only"
+
+
+def test_treats_no_majority_cancellation_as_terminal():
+    class Client:
+        def get_transaction(self, _tx_hash):
+            return {"status_name": "CANCELED", "result_name": "NO_MAJORITY"}
+
+    with pytest.raises(CanceledTransaction) as error:
+        wait_finalized(Client(), "0xdead")
+    assert error.value.receipt["result_name"] == "NO_MAJORITY"

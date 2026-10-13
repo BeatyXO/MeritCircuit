@@ -11,6 +11,7 @@ import json
 import os
 import re
 import sys
+import time
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -78,15 +79,35 @@ def tx_hash_text(tx_hash):
 
 
 def wait_finalized(client, tx_hash):
-    from genlayer_py.types.transactions import TransactionStatus
+    for _ in range(120):
+        receipt = client.get_transaction(tx_hash)
+        status = as_text(receipt.get("status_name"))
+        if status == "CANCELED":
+            raise CanceledTransaction(tx_hash, receipt)
+        if status == "FINALIZED":
+            return receipt
+        time.sleep(5)
+    raise RuntimeError(f"transaction did not finalize within 10 minutes: {tx_hash}")
 
-    receipt = client.wait_for_transaction_receipt(
-        tx_hash, status=TransactionStatus.FINALIZED, interval=5000, retries=120,
-        full_transaction=True,
-    )
-    if as_text(receipt.get("status_name")) != "FINALIZED":
-        raise RuntimeError(f"transaction did not finalize: {receipt!r}")
-    return receipt
+
+class CanceledTransaction(RuntimeError):
+    def __init__(self, tx_hash, receipt):
+        super().__init__(f"transaction canceled without finality: {tx_hash}")
+        self.tx_hash = tx_hash
+        self.receipt = receipt
+
+
+def record_canceled(state, label, tx_hash, receipt):
+    state.setdefault("canceled_transactions", []).append({
+        "label": label, "hash": tx_hash, "status": as_text(receipt.get("status_name")),
+        "result": as_text(receipt.get("result_name")),
+    })
+    state.setdefault("pending_transactions", {}).pop(label, None)
+    save_manifest(state)
+
+
+def canceled_submissions(state, label):
+    return sum(item.get("label") == label for item in state.get("canceled_transactions", []))
 
 
 def execution_result(receipt):
@@ -166,16 +187,25 @@ def write_once(client, state, label, address, function_name, args, account=None,
     pending = state.setdefault("pending_transactions", {})
     if label in transactions:
         return transactions[label]["receipt"]
-    if label in pending:
-        tx_hash = pending[label]["hash"]
-    else:
-        confirm_network(client)
-        tx_hash = tx_hash_text(client.write_contract(
-            address=address, function_name=function_name, args=args, account=account,
-        ))
-        pending[label] = {"hash": tx_hash, "function": function_name}
-        save_manifest(state)
-    receipt = wait_finalized(client, tx_hash)
+    while True:
+        if canceled_submissions(state, label) >= 3:
+            raise RuntimeError(f"{label} was canceled three times without consensus")
+        if label in pending:
+            tx_hash = pending[label]["hash"]
+        else:
+            confirm_network(client)
+            tx_hash = tx_hash_text(client.write_contract(
+                address=address, function_name=function_name, args=args, account=account,
+            ))
+            pending[label] = {"hash": tx_hash, "function": function_name}
+            save_manifest(state)
+        try:
+            receipt = wait_finalized(client, tx_hash)
+            break
+        except CanceledTransaction as canceled:
+            record_canceled(state, label, tx_hash, canceled.receipt)
+            pending = state.setdefault("pending_transactions", {})
+            continue
     execution = execution_result(receipt)
     succeeded = execution == "FINISHED_WITH_RETURN"
     if succeeded != expect_success:
@@ -201,35 +231,36 @@ def deploy_once(client, state, contract_key, source_path, args=None):
         return state[address_field]
     label = f"deploy_{contract_key}"
     pending = state.setdefault("pending_transactions", {})
-    if label in pending:
-        receipt = wait_finalized(client, pending[label]["hash"])
-        execution = execution_result(receipt)
-        if execution != "FINISHED_WITH_RETURN":
-            # A finalized contract error cannot be repaired by polling the
-            # same transaction. Preserve the evidence, clear the checkpoint,
-            # and submit one corrected deployment below.
-            failed = state.setdefault("failed_transactions", {}).setdefault(label, [])
-            failed.append({"hash": pending[label]["hash"], "status": "FINALIZED",
-                           "execution": execution,
-                           "receipt": receipt_summary(receipt)})
-            pending.pop(label)
+    while True:
+        if canceled_submissions(state, label) >= 3:
+            raise RuntimeError(f"{label} deployment was canceled three times without consensus")
+        if label in pending:
+            tx_hash = pending[label]["hash"]
+        else:
+            confirm_network(client)
+            code = source_path.read_bytes()
+            tx_hash = tx_hash_text(client.deploy_contract(code=code, args=args or []))
+            pending[label] = {"hash": tx_hash, "contract": str(source_path.relative_to(ROOT))}
             save_manifest(state)
-            receipt = None
-    else:
-        receipt = None
-    if receipt is None:
-        confirm_network(client)
-        code = source_path.read_bytes()
-        tx_hash = tx_hash_text(client.deploy_contract(code=code, args=args or []))
-        pending[label] = {"hash": tx_hash, "contract": str(source_path.relative_to(ROOT))}
+        try:
+            receipt = wait_finalized(client, tx_hash)
+        except CanceledTransaction as canceled:
+            record_canceled(state, label, tx_hash, canceled.receipt)
+            pending = state.setdefault("pending_transactions", {})
+            continue
+        execution = execution_result(receipt)
+        if execution == "FINISHED_WITH_RETURN":
+            break
+        failed = state.setdefault("failed_transactions", {}).setdefault(label, [])
+        failed.append({"hash": tx_hash, "status": "FINALIZED", "execution": execution,
+                       "receipt": receipt_summary(receipt)})
+        pending.pop(label, None)
         save_manifest(state)
-        receipt = wait_finalized(client, tx_hash)
-    execution = execution_result(receipt)
-    if execution != "FINISHED_WITH_RETURN":
-        raise RuntimeError(
-            f"{label} finalized unsuccessfully: execution={execution!r}, "
-            f"receipt={receipt_summary(receipt)!r}"
-        )
+        if failed:
+            raise RuntimeError(
+                f"{label} finalized unsuccessfully: execution={execution!r}, "
+                f"receipt={receipt_summary(receipt)!r}"
+            )
     address = receipt.get("recipient")
     decoded = receipt.get("tx_data_decoded") or {}
     if not address:
