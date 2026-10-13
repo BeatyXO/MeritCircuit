@@ -55,7 +55,7 @@ python -m pytest -q tests/test_merit_circuit.py
 python -m pytest -q tests/direct/
 ```
 
-The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The verified local result is 52 passing pytest tests, including 6 Direct Mode tests with independent verifier re-evaluation. Earlier Studionet attempts are archived in `deployments/attempt_1.json` through `attempt_3.json`. Current addresses, transactions, definition hash, and incomplete state are recorded in `deployments/studionet.json`: one pair finalized, while another criterion reached the three-attempt `INDETERMINATE` cap. The typed gate rejected an uncertified candidate and an unauthorized caller; see `deployments/gate_probe.json`. No complete ranking, certified winner, or successful award exists.
+The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The verified local result is 54 passing pytest tests, including 6 Direct Mode tests with independent verifier re-evaluation. Current Studionet deployments and primary-selection evidence are recorded in `deployments/studionet.json`: two of three pairs finalized, while one criterion exhausted the three-attempt `INDETERMINATE` cap. A separate, explicitly two-candidate scenario has a strict certified winner, a successful typed gate award, and finalized wrong-definition, wrong-ranking, loser, replay, and unauthorized-caller rejections; see `deployments/award_scenario.json`. The separate scenario does not complete the primary selection.
 
 ## Immutable fixture workflow
 
@@ -65,7 +65,7 @@ The offline suite uses a mock GenLayer harness; Direct Mode executes contract lo
 python scripts/pin_fixture_commit.py <FULL_40_HEX_FIXTURE_COMMIT>
 ```
 
-The pinned demo JSON is committed and pushed. These URLs identify repository content only; they are not evidence that contract execution or an onchain demo occurred.
+The pinned demo JSON is committed and pushed. The pinned URLs identify immutable source documents; onchain execution evidence is recorded separately in the deployment manifests.
 
 ## Limitations explicitly acknowledged
 
@@ -74,8 +74,8 @@ The pinned demo JSON is committed and pushed. These URLs identify repository con
 - A frozen source **URL** is not necessarily a frozen web document. The example uses immutable commit-pinned raw GitHub URLs after first push.
 - A maximum of 8 candidates limits costs and makes tournament graph algorithms bounded. The worst-case 8-candidate/6-criterion evaluation requires 168 semantic consensus calls, each with mirrored prompts and independent validator reading: expensive by design. The live demo should use 3 candidates and 2 criteria.
 - At creation time the contract owner selects the candidate IDs and tie-break order; an adversarial owner can exploit exact ties, so **no award is certified in the absence of a strict winner**.
-- Tests with simulated APIs do not confirm chain behavior. Final evidence file has null values on purpose.
+- Tests with simulated APIs do not confirm chain behavior. Deployment manifests distinguish directly observed results from incomplete acceptance evidence.
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/INVARIANTS.md`](docs/INVARIANTS.md), [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md), [`docs/REVIEWER_DEMO.md`](docs/REVIEWER_DEMO.md).
 
-The full Studionet run uses the two authorized test-wallet keys in the process environment as described in [`DEPLOYMENT.md`](DEPLOYMENT.md). The SDK identity check confirmed the stable alias and chain ID; the lifecycle script repeats that check immediately before every live write. This repository remains incomplete for final submission until a complete ranking and the remaining required gate outcomes are evidenced. The test wallet keys shared in the task should be swept and retired.
+The full Studionet run uses the two authorized test-wallet keys in the process environment as described in [`DEPLOYMENT.md`](DEPLOYMENT.md). The SDK identity check confirmed the stable alias and chain ID; the lifecycle script repeats that check immediately before every live write. The primary three-candidate selection remains incomplete: no ranking or winner is claimed for it. `python scripts/preflight.py --final` therefore fails. The test wallet keys shared in the task should be swept and retired.

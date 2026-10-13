@@ -1,7 +1,7 @@
 {
   "project": "MeritCircuit",
-  "status": "implementation-live-validation-incomplete",
-  "file_count": 35,
+  "status": "live-validation-incomplete-primary-selection",
+  "file_count": 42,
   "files": [
     {
       "path": ".env.example",
@@ -20,8 +20,33 @@
     },
     {
       "path": "BUILD_STATUS.md",
-      "sha256": "5afb03c8b55e48581343164396f285bff727355c222923214ae11eb353f7b207",
-      "bytes": 3334
+      "sha256": "5817746b4ec2d52776f3ca060edd3a2ae073faf77e8c0223a31a837ce12c549d",
+      "bytes": 3582
+    },
+    {
+      "path": "DEPLOYMENT.md",
+      "sha256": "a68f8e3179283d2f3f3a57cb2c140f8062debe0787fd9d583d653483cdb3d5f4",
+      "bytes": 6267
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "2be8e4aff2f44d2627d8a78060d4f06cf82f2f6827b06bcf9c9762f698b4a697",
+      "bytes": 1082
+    },
+    {
+      "path": "MERITCIRCUIT_AGENT_PROMPT.md",
+      "sha256": "b7e58b74aef51ff09f5a3084a2c278c3497a2f5dc72995ede8585e2ead7fb7ce",
+      "bytes": 13858
+    },
+    {
+      "path": "README.md",
+      "sha256": "429a33e10188f7cd1ddd8f449afa634055c1284bdd6f82cb9262c81a8bdfba5d",
+      "bytes": 8280
+    },
+    {
+      "path": "SUBMISSION.md",
+      "sha256": "f20f8005d576c6bc923252b2109588ab4098d10191a4608acfd94fea42ec21f8",
+      "bytes": 1960
     },
     {
       "path": "contracts/merit_award_gate.py",
@@ -30,18 +55,13 @@
     },
     {
       "path": "contracts/merit_circuit.py",
-      "sha256": "fc2f488f9915136b14b6fa2759d21c720c5f210b8b36509ef5febc7f3da14ec5",
-      "bytes": 29812
+      "sha256": "814ade8ce9cf2eb2fb75043e6bee4e43fdc2d127026db1dfc365135b74b76154",
+      "bytes": 30253
     },
     {
       "path": "demo/selection.json",
       "sha256": "63137e5e6731e1646a47665632f8a2a86a2219596f80a33a2408935c21e87ceb",
       "bytes": 1582
-    },
-    {
-      "path": "DEPLOYMENT.md",
-      "sha256": "2398725e418816c6d3868e2eba0b29ce51d48b2d17a63c6654b69d9a5bc23197",
-      "bytes": 4075
     },
     {
       "path": "deployments/attempt_1.json",
@@ -59,9 +79,29 @@
       "bytes": 3677
     },
     {
+      "path": "deployments/attempt_4.json",
+      "sha256": "e7aa4440e9a6aa4a07b53f20a923679a686d4dcb048b4321e34e5e839c1a4ed3",
+      "bytes": 2145379
+    },
+    {
+      "path": "deployments/attempt_4_gate_probe.json",
+      "sha256": "4a7a9540e9e140cd935eeb3d5030fd281cc9314080e1b6f36d0c6f9c618355bb",
+      "bytes": 1084
+    },
+    {
+      "path": "deployments/attempt_5.json",
+      "sha256": "bcb6045c0c4ac85326f049072d45440f33e87cf5d45ad1d1c9504fb2528cef23",
+      "bytes": 2850511
+    },
+    {
+      "path": "deployments/award_scenario.json",
+      "sha256": "10532faf35f1a5c0d8a72c2abe8953739c4eac599447429088d6d3e9db3382b4",
+      "bytes": 1835680
+    },
+    {
       "path": "deployments/studionet.json",
-      "sha256": "bda356c3ac7b27f907ba478778eda41449561cb3eabf0a639d09b2ba725150d1",
-      "bytes": 949
+      "sha256": "bcb6045c0c4ac85326f049072d45440f33e87cf5d45ad1d1c9504fb2528cef23",
+      "bytes": 2850511
     },
     {
       "path": "docs/ARCHITECTURE.md",
@@ -104,29 +144,19 @@
       "bytes": 249
     },
     {
-      "path": "LICENSE",
-      "sha256": "2be8e4aff2f44d2627d8a78060d4f06cf82f2f6827b06bcf9c9762f698b4a697",
-      "bytes": 1082
-    },
-    {
-      "path": "MERITCIRCUIT_AGENT_PROMPT.md",
-      "sha256": "b7e58b74aef51ff09f5a3084a2c278c3497a2f5dc72995ede8585e2ead7fb7ce",
-      "bytes": 13858
-    },
-    {
       "path": "pytest.ini",
       "sha256": "2a8f27927b0d7ad58b9862815b2847abc29c11e85abe5f404cde417d024d9b37",
       "bytes": 113
     },
     {
-      "path": "README.md",
-      "sha256": "fbad7723ebe2c9a0db403f22aa4292fd8a853ca1358d5022e3a75758b5b4efc9",
-      "bytes": 7775
-    },
-    {
       "path": "requirements-test.txt",
       "sha256": "2f476338f1d259a9953da1a44cca91d5923dd324c30b2016c5528e49b31183b5",
       "bytes": 120
+    },
+    {
+      "path": "scripts/advance_studionet_pairs.py",
+      "sha256": "4e624598eb66184afd51149d2c0cf542a2b6648adcff9b9b38716b544a93976a",
+      "bytes": 4845
     },
     {
       "path": "scripts/check_studionet.py",
@@ -135,8 +165,8 @@
     },
     {
       "path": "scripts/live_studionet.py",
-      "sha256": "8d832209ed1298c02a048324ec33827b34665390cda234ff866b0132c2d0b217",
-      "bytes": 19779
+      "sha256": "741c7d75791380a4530e80ebd4c00fd901c26612767ce0cfc2f36b605661b67e",
+      "bytes": 22802
     },
     {
       "path": "scripts/pin_fixture_commit.py",
@@ -149,9 +179,14 @@
       "bytes": 2894
     },
     {
-      "path": "SUBMISSION.md",
-      "sha256": "5f472938d116dd0cbfd82f47084921a7ecd000699b5d32a272fc913041da63e0",
-      "bytes": 2096
+      "path": "scripts/probe_studionet_gate.py",
+      "sha256": "afd96c2bc3882461c0bcee5ebca3fc041e574e167f5de7a8a2fb631b8d909e1d",
+      "bytes": 5310
+    },
+    {
+      "path": "scripts/run_studionet_gate_scenario.py",
+      "sha256": "dc591b7821eb1c735c1c0f7f3bbf992b3354a7152c3e0cd3eaaffdf6a957216e",
+      "bytes": 8316
     },
     {
       "path": "tests/conftest.py",
@@ -170,13 +205,13 @@
     },
     {
       "path": "tests/test_live_studionet.py",
-      "sha256": "20ead3b720f555cce3ed0b680dd32e6d056eff4dfe2998bbb36d5e83074d1fcf",
-      "bytes": 1469
+      "sha256": "ad4e86ed2b150681c34a44657f9b5ac5af03213b7e88ece663b4972d227418aa",
+      "bytes": 2542
     },
     {
       "path": "tests/test_merit_circuit.py",
-      "sha256": "7d2858c0bd477a86a01f747539f32832b7a158d747db4bda87222fce78fa5186",
-      "bytes": 15617
+      "sha256": "8466b2e488f78ebf19a66669b69444c73fe98926f75a6f800b66135560963bdb",
+      "bytes": 16135
     }
   ]
 }
