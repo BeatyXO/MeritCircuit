@@ -1,7 +1,7 @@
 {
   "project": "MeritCircuit",
   "status": "implementation-live-validation-incomplete",
-  "file_count": 34,
+  "file_count": 35,
   "files": [
     {
       "path": ".env.example",
@@ -20,8 +20,8 @@
     },
     {
       "path": "BUILD_STATUS.md",
-      "sha256": "5fb50d442bb3f110469c9a82e5bcd6dfced6fc7f9c72a14ec8ba63a1f0059ed4",
-      "bytes": 3106
+      "sha256": "5afb03c8b55e48581343164396f285bff727355c222923214ae11eb353f7b207",
+      "bytes": 3334
     },
     {
       "path": "contracts/merit_award_gate.py",
@@ -30,8 +30,8 @@
     },
     {
       "path": "contracts/merit_circuit.py",
-      "sha256": "aedff928f702184b3725dd58acfe200be8c416d3213197414095db720354b43a",
-      "bytes": 29051
+      "sha256": "fc2f488f9915136b14b6fa2759d21c720c5f210b8b36509ef5febc7f3da14ec5",
+      "bytes": 29812
     },
     {
       "path": "demo/selection.json",
@@ -40,8 +40,8 @@
     },
     {
       "path": "DEPLOYMENT.md",
-      "sha256": "f74ca4a5b1a2978308bf410d6803efb93ec75dfff118cb8aded6ed3d68681860",
-      "bytes": 3871
+      "sha256": "2398725e418816c6d3868e2eba0b29ce51d48b2d17a63c6654b69d9a5bc23197",
+      "bytes": 4075
     },
     {
       "path": "deployments/attempt_1.json",
@@ -52,6 +52,11 @@
       "path": "deployments/attempt_2.json",
       "sha256": "10ba43c9342677afb50b53858f157f05c1e1bc7a04241e8184ae408e57628c34",
       "bytes": 3705
+    },
+    {
+      "path": "deployments/attempt_3.json",
+      "sha256": "93da68fbd49986bb86d5f82d84fe6ece567285bef2533920fe43a5f19c306e4d",
+      "bytes": 3677
     },
     {
       "path": "deployments/studionet.json",
@@ -115,8 +120,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "695cc0e208245d6121a29ea0d17d68b2516c23de5b9f5c0e8fece66285e7b5f7",
-      "bytes": 7716
+      "sha256": "fbad7723ebe2c9a0db403f22aa4292fd8a853ca1358d5022e3a75758b5b4efc9",
+      "bytes": 7775
     },
     {
       "path": "requirements-test.txt",
@@ -145,8 +150,8 @@
     },
     {
       "path": "SUBMISSION.md",
-      "sha256": "7e36f51dc8f4c30530e0269953f7df3647e5f02161493a8c3fffbef391c1ef96",
-      "bytes": 1974
+      "sha256": "5f472938d116dd0cbfd82f47084921a7ecd000699b5d32a272fc913041da63e0",
+      "bytes": 2096
     },
     {
       "path": "tests/conftest.py",
@@ -170,8 +175,8 @@
     },
     {
       "path": "tests/test_merit_circuit.py",
-      "sha256": "4975b1a9ea46534be30d96678f1b61012a5c7f022cb5b2ae2bf5b6c0ab213eb0",
-      "bytes": 15003
+      "sha256": "7d2858c0bd477a86a01f747539f32832b7a158d747db4bda87222fce78fa5186",
+      "bytes": 15617
     }
   ]
 }

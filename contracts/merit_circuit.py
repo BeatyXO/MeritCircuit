@@ -212,7 +212,8 @@ def prompt_for(left: Candidate, right: Candidate, criterion: Criterion,
             "The displayed order is arbitrary. In a mirrored check the two extracts are swapped; "
             "re-evaluate the evidence, do not copy the prior side label. For the same underlying judgment, "
             "a decisive LEFT/RIGHT verdict must reverse when the extracts swap; TIE and INDETERMINATE stay unchanged. "
-            "Give short verbatim contiguous substrings FROM EACH WEB EXTRACT as quotes, with no ellipses or rewriting; "
+            "Give short verbatim contiguous substrings FROM EACH WEB EXTRACT as quotes, with no ellipses or rewriting. "
+            "You may replace source line breaks with single spaces in quotes, but preserve every non-whitespace character; "
             "do not cite text from the submitted summary as independent evidence. "
             "Return ONLY JSON with exactly verdict LEFT|RIGHT|TIE|INDETERMINATE, "
             "reason, left_quote, right_quote. LEFT refers to first displayed candidate, RIGHT to second.\n"
@@ -226,10 +227,19 @@ def reverse_vote(verdict: int) -> int:
     return RIGHT if verdict == LEFT else LEFT if verdict == RIGHT else verdict
 
 
+def normalized_whitespace(value: str) -> str:
+    """Fold source line wrapping only; preserve all non-whitespace characters."""
+    return " ".join(value.split())
+
+
 def anchored(v: dict, first: str, second: str) -> bool:
     if v["verdict"] == INDETERMINATE:
         return True
-    return v["left_quote"] in first and v["right_quote"] in second
+    left_quote = normalized_whitespace(v["left_quote"])
+    right_quote = normalized_whitespace(v["right_quote"])
+    return (bool(left_quote) and bool(right_quote)
+            and left_quote in normalized_whitespace(first)
+            and right_quote in normalized_whitespace(second))
 
 
 def classify_independently(left: Candidate, right: Candidate, criterion: Criterion) -> dict:
@@ -256,6 +266,10 @@ def classify_independently(left: Candidate, right: Candidate, criterion: Criteri
         if direct["verdict"] != reverse_vote(swapped["verdict"]):
             return {"verdict": INDETERMINATE, "reason": "mirrored verdict inconsistency",
                     "left_quote": "", "right_quote": ""}
+        # Store a stable single-line evidence span so line-wrapped source text
+        # and the event/history representation use the same canonical quote.
+        direct["left_quote"] = normalized_whitespace(direct["left_quote"])
+        direct["right_quote"] = normalized_whitespace(direct["right_quote"])
         return direct
     except Exception:
         return {"verdict": INDETERMINATE, "reason": "source or model evaluation failed",
@@ -289,8 +303,7 @@ def consensus_comparison(left: Candidate, right: Candidate, criterion: Criterion
             validator_right = gl.nondet.web.render(right.evidence_url, mode="text")[:MAX_DOCUMENT]
             return (bool(proposed["left_quote"]) and bool(proposed["right_quote"])
                     and len(proposed["left_quote"]) <= 240 and len(proposed["right_quote"]) <= 240
-                    and proposed["left_quote"] in validator_left
-                    and proposed["right_quote"] in validator_right)
+                    and anchored(proposed, validator_left, validator_right))
         except Exception:
             return False
 

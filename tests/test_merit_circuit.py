@@ -116,6 +116,22 @@ def test_mirror_failure_is_diagnosed_without_accepting_biased_vote(env, selectio
     assert result["reason"] == "mirrored verdict inconsistency"
 
 
+def test_quote_anchor_folds_only_whitespace_and_rejects_paraphrase(env):
+    evidence = {"verdict": env.merit.LEFT, "left_quote": "tested Python prototype",
+                "right_quote": "documented migration plan"}
+    assert env.merit.anchored(
+        evidence,
+        "A tested Python\nprototype is available.",
+        "A documented\n migration plan is absent.",
+    )
+    paraphrase = dict(evidence, left_quote="working Python prototype")
+    assert not env.merit.anchored(
+        paraphrase,
+        "A tested Python\nprototype is available.",
+        "A documented\n migration plan is absent.",
+    )
+
+
 def test_retries_bounded_and_history_preserved(env, selection):
     sid, h = selection
     c = env.contract

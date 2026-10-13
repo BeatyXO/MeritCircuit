@@ -1,0 +1,95 @@
+{
+  "attempt": "third live build with explicit mirror prompt and diagnostic failure categories; incomplete",
+  "network": {
+    "alias": "studionet",
+    "chain_id": 61999,
+    "rpc": "https://studio.genlayer.com/api"
+  },
+  "contracts": {
+    "merit_circuit": {
+      "address": "0x223D4FB2588099910Abe4BF27A05F568362196Cc",
+      "deploy_tx": "0xdb983909bbfb9ece4d758c01f6b1367544fcbfe24da3f572412058215fccd2ea"
+    },
+    "merit_award_gate": {
+      "address": "0x9d335a25a0c0D221d55c0bf62199c57e0F8F4D5a",
+      "deploy_tx": "0x48e416cc07a31e2f486448a30a48d03b47b4d0b37b02f37e77a28f84dfe0cb7a"
+    }
+  },
+  "selection": {
+    "selection_id": 1,
+    "definition_hash": "98188e8cf9b721d1a8f514700e23c34fc797b7dd8c1bcf011bb97042d379a656",
+    "create_tx": null,
+    "seal_tx": null
+  },
+  "transactions": {
+    "assessment_1_2_1_1": {
+      "hash": "0x76aa386cd4f88bed6c68b50b0b3d6f8b30a08fba4df8fc2af84919ac2f01a5ac",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "assessment_1_2_1_2": {
+      "hash": "0xc98f686be8871c522cab32bae7bd41bd8a88dd653f5cef3b49325a9acdf5d258",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "assessment_1_2_1_3": {
+      "hash": "0x4446d19fba46ffc48b178c8c92b78bada1d0a2c80758a7204ba19a6474e31782",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "candidate_1": {
+      "hash": "0xf33301d50aab2464615817d3e0f2d2938b63fdef18f74452083b24035162a09b",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "candidate_2": {
+      "hash": "0x96a9cf20c6d577435ab6337a74f06181db25b6ded9b9495c2b809ec0c3d2bb57",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "candidate_3": {
+      "hash": "0x78cc7bd6261b9bd7c39e86b72db14c2b0f308da3da234052f718bdd1c582abbc",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "criterion_1": {
+      "hash": "0xbf30b51a5a5eb41db9da30fe14e538d028294fc717ff5e9cbdc5a0c4ef3e89cb",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "criterion_2": {
+      "hash": "0x95908ab6c6d12e3487f5a800dbfefcc23012fb62e3ca96a24f6697c72323dfa8",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "deploy_merit_award_gate": {
+      "hash": "0x48e416cc07a31e2f486448a30a48d03b47b4d0b37b02f37e77a28f84dfe0cb7a",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "deploy_merit_circuit": {
+      "hash": "0xdb983909bbfb9ece4d758c01f6b1367544fcbfe24da3f572412058215fccd2ea",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "seal_selection": {
+      "hash": "0x9f28c9288fd10f5940e2edc789b14bcad61ec88c9db14642946de4b5cf4a6e2d",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    },
+    "selection_create": {
+      "hash": "0xe4772681ece8ff851610a5299e28db7c98d6077e579768808edf658b905f8e37",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_RETURN"
+    }
+  },
+  "assessment_count": 3,
+  "indeterminate_record": {
+    "attempts": 3,
+    "verdict": "INDETERMINATE",
+    "reason": "non-verbatim evidence anchor",
+    "assessment_hash": "f440e454fa19b62a4fbdd4a6974c9fad97aa5fcf2632088aec1f77b32d784fb6"
+  },
+  "result": "no complete pair matrix or ranking; no MeritAwardGate call attempted",
+  "follow_up": "anchor matching now folds whitespace only (including source line breaks) and compares every remaining character exactly; a paraphrase remains rejected; retry cap remains three"
+}
