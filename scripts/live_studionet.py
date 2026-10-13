@@ -118,7 +118,7 @@ def execution_result(receipt):
     result_status = as_text(leader_result.get("status")) if isinstance(leader_result, dict) else None
     if outcome == "SUCCESS" and result_status == "return":
         return "FINISHED_WITH_RETURN"
-    if outcome == "ERROR" and result_status in ("contract_error", "error"):
+    if outcome == "ERROR" and result_status in ("contract_error", "error", "rollback"):
         return "FINISHED_WITH_ERROR"
     return None
 
@@ -128,6 +128,35 @@ def receipt_summary(receipt):
     return {key: receipt.get(key) for key in
             ("hash", "status_name", "tx_execution_result_name", "result_name", "recipient")
             if key in receipt}
+
+
+def leader_error(transaction):
+    """Extract only the leader's concise GenVM error text from an RPC view."""
+    consensus = transaction.get("consensus_data")
+    if not isinstance(consensus, dict):
+        return ""
+    receipts = consensus.get("leader_receipt")
+    if not isinstance(receipts, list):
+        return ""
+    leader = next((item for item in receipts
+                   if isinstance(item, dict) and item.get("mode") == "leader"), None)
+    if leader is None:
+        return ""
+    result = leader.get("genvm_result")
+    if isinstance(result, dict):
+        stderr = result.get("stderr")
+        if stderr:
+            return str(stderr)
+    leader_result = leader.get("result")
+    if isinstance(leader_result, dict) and isinstance(leader_result.get("payload"), str):
+        return leader_result["payload"]
+    return ""
+
+
+def assessment_tx_count(state):
+    """Count finalized assessment transactions once, including retries."""
+    return sum(label.startswith("assessment_")
+               for label in state.get("transactions", {}))
 
 
 def write_once(client, state, label, address, function_name, args, account=None,
@@ -150,6 +179,10 @@ def write_once(client, state, label, address, function_name, args, account=None,
     execution = execution_result(receipt)
     succeeded = execution == "FINISHED_WITH_RETURN"
     if succeeded != expect_success:
+        if execution == "FINISHED_WITH_ERROR" and expect_success:
+            state["status"] = "CONTRACT_ERROR"
+            state["incomplete_reason"] = f"{label} finalized with a contract error"
+            save_manifest(state)
         raise RuntimeError(
             f"{label} finalized with unexpected execution result {execution!r}; "
             f"receipt={receipt_summary(receipt)!r}"
@@ -273,19 +306,27 @@ def run_lifecycle(client, account, state):
                     label = f"assessment_{left}_{right}_{criterion_id}_{attempt + 1}"
                     write_once(client, state, label, merit, "assess_pair_criterion",
                                [sid, left, right, criterion_id, definition], account)
-                    assessment_count += 1
+                    assessment_count = assessment_tx_count(state)
+                    state["assessment_count"] = assessment_count
+                    save_manifest(state)
                     comparison = read(client, merit, "get_comparison", [sid, left, right, criterion_id])
                     attempt = int(comparison.get("attempts", 0))
                 if comparison is None or int(comparison.get("verdict", 4)) == 4:
+                    state["status"] = "INDETERMINATE"
+                    state["incomplete_reason"] = (
+                        f"INDETERMINATE retry cap reached for pair {left}/{right}, "
+                        f"criterion {criterion_id}"
+                    )
+                    save_manifest(state)
                     raise RuntimeError(f"INDETERMINATE retry cap reached for {left}/{right}/{criterion_id}")
-            assessment_count += attempt
+            assessment_count = assessment_tx_count(state)
             label = f"pair_{left}_{right}"
             if label not in state.get("transactions", {}):
                 write_once(client, state, label, merit, "finalize_pair", [sid, left, right, definition], account)
             # get_pair is available only after finalization.
             pair = read(client, merit, "get_pair", [sid, left, right])
             pair_margins.append({"left": left, "right": right, **pair})
-    state["assessment_count"] = assessment_count
+    state["assessment_count"] = assessment_tx_count(state)
     state["pair_margins"] = pair_margins
     fixture_shas = {
         match.group(1)
@@ -403,6 +444,8 @@ def main():
         print("Read-only Studionet identity confirmed; no transaction was signed or broadcast.")
         return
     state = load_json(MANIFEST_PATH)
+    state["status"] = "IN_PROGRESS"
+    state.pop("incomplete_reason", None)
     state["network_verification"] = {"alias": ALIAS, "chain_id": CHAIN_ID, "rpc": RPC,
                                      "sdk": "genlayer-py==0.16.3"}
     save_manifest(state)

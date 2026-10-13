@@ -55,7 +55,7 @@ python -m pytest -q tests/test_merit_circuit.py
 python -m pytest -q tests/direct/
 ```
 
-The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The recorded local results are 40 offline protocol passes, 6 Direct Mode passes, and 5 stable-SDK/diagnostic tests. Three Studionet attempts are archived in `deployments/attempt_1.json`, `deployments/attempt_2.json`, and `deployments/attempt_3.json`; none produced a completed ranking. The latest source change normalizes whitespace only for quote anchoring and requires a fresh deployment.
+The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The verified local result is 52 passing pytest tests, including 6 Direct Mode tests with independent verifier re-evaluation. Earlier Studionet attempts are archived in `deployments/attempt_1.json` through `attempt_3.json`. Current addresses, transactions, definition hash, and incomplete state are recorded in `deployments/studionet.json`: one pair finalized, while another criterion reached the three-attempt `INDETERMINATE` cap. The typed gate rejected an uncertified candidate and an unauthorized caller; see `deployments/gate_probe.json`. No complete ranking, certified winner, or successful award exists.
 
 ## Immutable fixture workflow
 
@@ -78,4 +78,4 @@ The pinned demo JSON is committed and pushed. These URLs identify repository con
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/INVARIANTS.md`](docs/INVARIANTS.md), [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md), [`docs/REVIEWER_DEMO.md`](docs/REVIEWER_DEMO.md).
 
-The full Studionet run uses the two authorized test-wallet keys in the process environment as described in [`DEPLOYMENT.md`](DEPLOYMENT.md). The SDK identity check confirmed the stable alias and chain ID; the lifecycle script repeats that check immediately before every live write. This repository remains incomplete for submission until corrected-version lifecycle evidence is complete.
+The full Studionet run uses the two authorized test-wallet keys in the process environment as described in [`DEPLOYMENT.md`](DEPLOYMENT.md). The SDK identity check confirmed the stable alias and chain ID; the lifecycle script repeats that check immediately before every live write. This repository remains incomplete for final submission until a complete ranking and the remaining required gate outcomes are evidenced. The test wallet keys shared in the task should be swept and retired.

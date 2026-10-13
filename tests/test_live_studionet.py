@@ -1,5 +1,5 @@
 """Receipt normalization tests for the pinned stable GenLayer SDK lifecycle."""
-from scripts.live_studionet import execution_result
+from scripts.live_studionet import execution_result, leader_error
 
 
 def current_rpc_receipt(leader_outcome, result_status, result_name="MAJORITY_AGREE"):
@@ -22,6 +22,7 @@ def test_normalizes_stable_rpc_success_only_with_majority_and_return():
 
 def test_normalizes_stable_rpc_contract_error_for_expected_rejections():
     assert execution_result(current_rpc_receipt("ERROR", "contract_error")) == "FINISHED_WITH_ERROR"
+    assert execution_result(current_rpc_receipt("ERROR", "rollback")) == "FINISHED_WITH_ERROR"
 
 
 def test_does_not_infer_success_from_finality_or_missing_consensus():
@@ -34,3 +35,15 @@ def test_prefers_explicit_execution_result_when_sdk_provides_one():
     receipt = current_rpc_receipt("ERROR", "contract_error")
     receipt["tx_execution_result_name"] = "FINISHED_WITH_RETURN"
     assert execution_result(receipt) == "FINISHED_WITH_RETURN"
+
+
+def test_extracts_only_leader_runtime_error():
+    tx = {"consensus_data": {"leader_receipt": [
+        {"mode": "leader", "genvm_result": {"stderr": "expected gate rejection"}},
+        {"mode": "validator", "genvm_result": {"stderr": "other message"}},
+    ]}}
+    assert leader_error(tx) == "expected gate rejection"
+    assert leader_error({}) == ""
+    assert leader_error({"consensus_data": {"leader_receipt": [
+        {"mode": "leader", "result": {"status": "rollback", "payload": "owner only"}},
+    ]}}) == "owner only"

@@ -1,0 +1,25 @@
+{
+  "network": "studionet",
+  "chain_id": 61999,
+  "rpc": "https://studio.genlayer.com/api",
+  "gate_address": "0x47a70B6828c1465612cE008bdE7E2Ec04Ac6512C",
+  "merit_circuit_address": "0x2e3bda43a3E0e983D365B92A5387368Cf93233b0",
+  "selection_id": 1,
+  "definition_hash": "98188e8cf9b721d1a8f514700e23c34fc797b7dd8c1bcf011bb97042d379a656",
+  "probes": {
+    "uncertified_candidate": {
+      "tx_hash": "0xf1e775d7e872549fa8d4a8656517afc653de0d2b439efa027d4e8612217e1272",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_ERROR",
+      "leader_error": "pinned ranking does not authorize this candidate",
+      "action_hash": "0cadf56a96767cb9250b9b3b45830e325ee84580927dc1cb1fee0a1baf3bd4b4"
+    },
+    "unauthorized_caller": {
+      "tx_hash": "0x2b252f7c8cb7ead4d123c3f6b7e0b5607480f39e75d944056f0204cf508a7646",
+      "status": "FINALIZED",
+      "execution": "FINISHED_WITH_ERROR",
+      "leader_error": "only gate owner may issue an award",
+      "action_hash": "e39af98f8ee497637a30a978cd08cf5f178f8fe13d05a8a254e01a9438a05421"
+    }
+  }
+}
