@@ -1,0 +1,29 @@
+{
+  "title": "Synthetic implementation-evidence lifecycle demonstration",
+  "purpose": "Demonstrate source-grounded pairwise comparison across three clearly differentiated fictional implementation stages",
+  "source_host": "raw.githubusercontent.com",
+  "criteria": [
+    {
+      "name": "Documented implementation maturity",
+      "rubric": "Compare only the implementation evidence explicitly published in each registered source. A runnable implementation with passing tests and working integration examples demonstrates more current implementation maturity than design and milestone documents without runnable code; design and milestone documents demonstrate more maturity than a concept with no architecture, milestones, or implementation artifacts. Do not infer unpublished evidence or reward future potential.",
+      "weight": 100
+    }
+  ],
+  "candidates": [
+    {
+      "name": "FieldNote",
+      "summary": "Fictional runnable reference implementation with regression tests and integration examples",
+      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/FIXTURE_COMMIT_PLACEHOLDER/fixtures/lifecycle_alpha.md"
+    },
+    {
+      "name": "PlanForge",
+      "summary": "Fictional design-stage proposal with architecture and milestones",
+      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/FIXTURE_COMMIT_PLACEHOLDER/fixtures/lifecycle_beta.md"
+    },
+    {
+      "name": "IdeaBoard",
+      "summary": "Fictional early concept without implementation artifacts",
+      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/FIXTURE_COMMIT_PLACEHOLDER/fixtures/lifecycle_gamma.md"
+    }
+  ]
+}
