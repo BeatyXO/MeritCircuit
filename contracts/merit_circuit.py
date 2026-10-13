@@ -187,8 +187,9 @@ def parse_vote(raw) -> dict:
             raise ValueError("invalid fields")
         name = doc["verdict"]
         mapping = {"LEFT": LEFT, "RIGHT": RIGHT, "TIE": TIE, "INDETERMINATE": INDETERMINATE}
-        if not isinstance(name, str) or name not in mapping:
+        if not isinstance(name, str) or name.strip().upper() not in mapping:
             raise ValueError("invalid verdict")
+        name = name.strip().upper()
         if any(not isinstance(doc[x], str) for x in ("reason", "left_quote", "right_quote")):
             raise ValueError("invalid evidence fields")
         if len(doc["reason"]) > MAX_REASON or len(doc["left_quote"]) > 240 or len(doc["right_quote"]) > 240:
@@ -215,8 +216,13 @@ def prompt_for(left: Candidate, right: Candidate, criterion: Criterion,
             "Give short verbatim contiguous substrings FROM EACH WEB EXTRACT as quotes, with no ellipses or rewriting. "
             "You may replace source line breaks with single spaces in quotes, but preserve every non-whitespace character; "
             "do not cite text from the submitted summary as independent evidence. "
-            "Return ONLY JSON with exactly verdict LEFT|RIGHT|TIE|INDETERMINATE, "
-            "reason, left_quote, right_quote. LEFT refers to first displayed candidate, RIGHT to second.\n"
+            "Return one JSON object with exactly these four string fields and no other fields: "
+            "verdict, reason, left_quote, right_quote. verdict must be exactly one token: "
+            "LEFT, RIGHT, TIE, or INDETERMINATE (never return the alternatives as a list or text). "
+            "Use this shape: {\"verdict\":\"LEFT\",\"reason\":\"short reason\","
+            "\"left_quote\":\"exact quote from first extract\","
+            "\"right_quote\":\"exact quote from second extract\"}. "
+            "LEFT refers to first displayed candidate, RIGHT to second.\n"
             + encoded({"rubric": criterion.rubric, "criterion": criterion.name,
                        "first": {"source": first_text},
                        "second": {"source": second_text},

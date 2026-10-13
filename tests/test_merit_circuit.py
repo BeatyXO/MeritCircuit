@@ -300,6 +300,19 @@ def test_duplicate_json_keys_fail_closed(env):
     assert fenced["verdict"] == env.merit.INDETERMINATE
 
 
+def test_parse_vote_normalizes_enum_whitespace_but_rejects_extra_fields(env):
+    vote = env.merit.parse_vote({
+        "verdict": " left ", "reason": "grounded", "left_quote": "alpha fact",
+        "right_quote": "beta fact",
+    })
+    assert vote["verdict"] == env.merit.LEFT
+    malformed = env.merit.parse_vote({
+        "verdict": "LEFT", "reason": "grounded", "left_quote": "alpha fact",
+        "right_quote": "beta fact", "confidence": 0.9,
+    })
+    assert malformed["verdict"] == env.merit.INDETERMINATE
+
+
 @pytest.mark.parametrize("weight", [-1, 0, 101, 2**32, 2**256 - 1])
 def test_reject_nonpositive_overflow_and_out_of_range_weights(env, weight):
     c = env.contract
