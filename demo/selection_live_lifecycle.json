@@ -4,26 +4,26 @@
   "source_host": "raw.githubusercontent.com",
   "criteria": [
     {
-      "name": "Documented implementation maturity",
-      "rubric": "Compare only the implementation evidence explicitly published in each registered source. A runnable implementation with passing tests and working integration examples demonstrates more current implementation maturity than design and milestone documents without runnable code; design and milestone documents demonstrate more maturity than a concept with no architecture, milestones, or implementation artifacts. Do not infer unpublished evidence or reward future potential.",
+      "name": "Demonstrated implementation and integration evidence",
+      "rubric": "Compare current, source-described implementation evidence only. A running prototype with a tested implementation and completed examples using sample applications demonstrates more current integration evidence than interface examples or speculative reuse; a running, tested prototype demonstrates more implementation evidence than a design proposal with no runnable code; a design proposal demonstrates more than a concept without architecture or milestones. Count completed examples, not predicted adoption. Do not infer unpublished evidence or reward future potential.",
       "weight": 100
     }
   ],
   "candidates": [
     {
-      "name": "FieldNote",
-      "summary": "Fictional runnable reference implementation with regression tests and integration examples",
-      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/FIXTURE_COMMIT_PLACEHOLDER/fixtures/lifecycle_alpha.md"
+      "name": "BridgeKit",
+      "summary": "Synthetic adapter prototype with parser tests and interface examples",
+      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5/fixtures/alpha.md"
     },
     {
-      "name": "PlanForge",
-      "summary": "Fictional design-stage proposal with architecture and milestones",
-      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/FIXTURE_COMMIT_PLACEHOLDER/fixtures/lifecycle_beta.md"
+      "name": "TraceGarden",
+      "summary": "Synthetic observability proposal without a runnable prototype",
+      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5/fixtures/beta.md"
     },
     {
-      "name": "IdeaBoard",
-      "summary": "Fictional early concept without implementation artifacts",
-      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/FIXTURE_COMMIT_PLACEHOLDER/fixtures/lifecycle_gamma.md"
+      "name": "SchemaRelay",
+      "summary": "Synthetic tested prototype with two illustrative application integrations",
+      "evidence_url": "https://raw.githubusercontent.com/BeatyXO/MeritCircuit/233fdf7a1f4f3a5f8a03d0eccc33fc54f0972ef5/fixtures/gamma.md"
     }
   ]
 }

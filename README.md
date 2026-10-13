@@ -12,8 +12,8 @@ The user-facing metaphor: five grant proposals cannot be reliably ordered from a
 - `contracts/merit_award_gate.py`: a **real typed interface** to another Intelligent Contract and owner-only, replay-protected award records (no fund transfers).
 - `tests/test_merit_circuit.py`: self-contained deterministic offline protocol tests with simulated GenLayer APIs, **not real Direct Mode**.
 - `tests/direct/test_stable_direct.py`: GenLayer Testing Suite Direct Mode checks for contract behavior and independent validator re-evaluation.
-- `fixtures/`: clearly marked **synthetic** example proposals; `demo/selection.json` references immutable raw GitHub URLs after pinning.
-- `scripts/`: static preflight, immutable fixture pinning, read-only network probes, and a checkpointed stable-SDK lifecycle runner.
+- `fixtures/`: clearly marked **synthetic** example proposals; the live selections reference immutable raw GitHub URLs pinned to a commit.
+- `scripts/`: static preflight, immutable fixture pinning, read-only network probes, and checkpointed stable-SDK lifecycle runners.
 - `docs/`, `DEPLOYMENT.md`, `SUBMISSION.md`, `deployments/studionet.json`: architecture, adversarial model, and honest evidence requirements.
 
 ## Network is non-negotiable
@@ -55,7 +55,7 @@ python -m pytest -q tests/test_merit_circuit.py
 python -m pytest -q tests/direct/
 ```
 
-The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The verified local result is 54 passing pytest tests, including 6 Direct Mode tests with independent verifier re-evaluation. Current Studionet deployments and primary-selection evidence are recorded in `deployments/studionet.json`: two of three pairs finalized, while one criterion exhausted the three-attempt `INDETERMINATE` cap. A separate, explicitly two-candidate scenario has a strict certified winner, a successful typed gate award, and finalized wrong-definition, wrong-ranking, loser, replay, and unauthorized-caller rejections; see `deployments/award_scenario.json`. The separate scenario does not complete the primary selection.
+The offline suite uses a mock GenLayer harness; Direct Mode executes contract logic in-memory and invokes an independent verifier, but neither establishes network consensus or deployment. The verified local result is 54 passing pytest tests, including 6 Direct Mode tests with independent verifier re-evaluation. On stable Studionet, selection 3 completed all three consensus comparisons, finalized its full matrix and ranking, certified candidate 3, and recorded a successful typed gate award plus finalized wrong-definition, wrong-ranking, losing-candidate, replay, and unauthorized-caller rejections. The original selection 1 remains archived as `INDETERMINATE` after its three-attempt mirrored-verdict cap; it has not been altered or ranked. Selection 2 is a separate two-candidate consumer demonstration. See `deployments/studionet.json`, `deployments/attempt_5.json`, and `deployments/award_scenario.json`.
 
 ## Immutable fixture workflow
 
@@ -65,7 +65,7 @@ The offline suite uses a mock GenLayer harness; Direct Mode executes contract lo
 python scripts/pin_fixture_commit.py <FULL_40_HEX_FIXTURE_COMMIT>
 ```
 
-The pinned demo JSON is committed and pushed. The pinned URLs identify immutable source documents; onchain execution evidence is recorded separately in the deployment manifests.
+The pinned demo JSON is committed and pushed. The pinned URLs identify immutable source documents; onchain execution evidence is recorded separately in the deployment manifests. `demo/selection_live_lifecycle.json` is the input used for completed selection 3.
 
 ## Limitations explicitly acknowledged
 
@@ -74,8 +74,8 @@ The pinned demo JSON is committed and pushed. The pinned URLs identify immutable
 - A frozen source **URL** is not necessarily a frozen web document. The example uses immutable commit-pinned raw GitHub URLs after first push.
 - A maximum of 8 candidates limits costs and makes tournament graph algorithms bounded. The worst-case 8-candidate/6-criterion evaluation requires 168 semantic consensus calls, each with mirrored prompts and independent validator reading: expensive by design. The live demo should use 3 candidates and 2 criteria.
 - At creation time the contract owner selects the candidate IDs and tie-break order; an adversarial owner can exploit exact ties, so **no award is certified in the absence of a strict winner**.
-- Tests with simulated APIs do not confirm chain behavior. Deployment manifests distinguish directly observed results from incomplete acceptance evidence.
+- Tests with simulated APIs do not confirm chain behavior. Deployment manifests distinguish finalized onchain results from archived incomplete attempts.
 
 See [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), [`docs/INVARIANTS.md`](docs/INVARIANTS.md), [`docs/THREAT_MODEL.md`](docs/THREAT_MODEL.md), [`docs/REVIEWER_DEMO.md`](docs/REVIEWER_DEMO.md).
 
-The full Studionet run uses the two authorized test-wallet keys in the process environment as described in [`DEPLOYMENT.md`](DEPLOYMENT.md). The SDK identity check confirmed the stable alias and chain ID; the lifecycle script repeats that check immediately before every live write. The primary three-candidate selection remains incomplete: no ranking or winner is claimed for it. `python scripts/preflight.py --final` therefore fails. The test wallet keys shared in the task should be swept and retired.
+The completed Studionet lifecycle uses ephemeral test-wallet environment variables; never put keys in the repository. The SDK identity check confirmed the stable alias and actual chain ID, and the lifecycle runner repeats that check immediately before each write. Selection 3 supplies the complete three-candidate matrix, certified winner, and consumer proof. Selection 1's capped INDETERMINATE outcome remains archived without a fabricated ranking. `python scripts/preflight.py --final` passes against the verified selection 3 evidence. The test-wallet keys shared in the task should be swept and retired.

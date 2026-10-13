@@ -1,7 +1,7 @@
 {
   "project": "MeritCircuit",
-  "status": "live-validation-incomplete-primary-selection",
-  "file_count": 42,
+  "status": "live-validation-complete-publication-pending",
+  "file_count": 48,
   "files": [
     {
       "path": ".env.example",
@@ -20,13 +20,13 @@
     },
     {
       "path": "BUILD_STATUS.md",
-      "sha256": "5817746b4ec2d52776f3ca060edd3a2ae073faf77e8c0223a31a837ce12c549d",
-      "bytes": 3582
+      "sha256": "da1bbd73f9177053bd08d977bf7005e645ea0a429e3751aca6cd3dce708e1257",
+      "bytes": 3854
     },
     {
       "path": "DEPLOYMENT.md",
-      "sha256": "a68f8e3179283d2f3f3a57cb2c140f8062debe0787fd9d583d653483cdb3d5f4",
-      "bytes": 6267
+      "sha256": "405561071850536f287b62563b07814361f0e348b71c885acb92ac3da3900ca3",
+      "bytes": 8369
     },
     {
       "path": "LICENSE",
@@ -40,13 +40,13 @@
     },
     {
       "path": "README.md",
-      "sha256": "429a33e10188f7cd1ddd8f449afa634055c1284bdd6f82cb9262c81a8bdfba5d",
-      "bytes": 8280
+      "sha256": "0032b977f1a67753e75f866a1ce052c854225aaab188249d948e8bc5fdfa3561",
+      "bytes": 8550
     },
     {
       "path": "SUBMISSION.md",
-      "sha256": "f20f8005d576c6bc923252b2109588ab4098d10191a4608acfd94fea42ec21f8",
-      "bytes": 1960
+      "sha256": "7cb6f1f281b3960dc4755979461c6a1eaedd3721d2d3e10094da1c9ef95799fa",
+      "bytes": 2443
     },
     {
       "path": "contracts/merit_award_gate.py",
@@ -62,6 +62,11 @@
       "path": "demo/selection.json",
       "sha256": "63137e5e6731e1646a47665632f8a2a86a2219596f80a33a2408935c21e87ceb",
       "bytes": 1582
+    },
+    {
+      "path": "demo/selection_live_lifecycle.json",
+      "sha256": "dabeaeb0ab790e260369624d0c878d1d9d5d1478003a8db04aa2d8fd80117d19",
+      "bytes": 1789
     },
     {
       "path": "deployments/attempt_1.json",
@@ -100,8 +105,13 @@
     },
     {
       "path": "deployments/studionet.json",
-      "sha256": "bcb6045c0c4ac85326f049072d45440f33e87cf5d45ad1d1c9504fb2528cef23",
-      "bytes": 2850511
+      "sha256": "3838bc4fe9532231d985c8a3ff88b798aedf0797ad52d5150adc541e626f45c1",
+      "bytes": 2788470
+    },
+    {
+      "path": "deployments/studionet_selection_3.json",
+      "sha256": "630f8a1bd00602502cfa3bf4944dab55485c35e8a9fc1548e2c9e71ee7c8981a",
+      "bytes": 2282920
     },
     {
       "path": "docs/ARCHITECTURE.md",
@@ -137,6 +147,21 @@
       "path": "fixtures/gamma.md",
       "sha256": "33c8c7f6aef8bc6337edf1fb82e7d5eb82159213df126e2670e1d4fd1a111aa9",
       "bytes": 757
+    },
+    {
+      "path": "fixtures/lifecycle_alpha.md",
+      "sha256": "b6ece5c057669d340da539380a3e664826bc485607092207dc56d8ac54780621",
+      "bytes": 654
+    },
+    {
+      "path": "fixtures/lifecycle_beta.md",
+      "sha256": "0a5bdaf56b3dca1ad6f106b3d4829273bde3c8bd1dfceb25d37ae52434d833d5",
+      "bytes": 548
+    },
+    {
+      "path": "fixtures/lifecycle_gamma.md",
+      "sha256": "1a89534bd15b0804f4e436f180b4266bd86a7dacce4bd35c11b72f569efd9024",
+      "bytes": 563
     },
     {
       "path": "gltest.config.yaml",
@@ -182,6 +207,11 @@
       "path": "scripts/probe_studionet_gate.py",
       "sha256": "afd96c2bc3882461c0bcee5ebca3fc041e574e167f5de7a8a2fb631b8d909e1d",
       "bytes": 5310
+    },
+    {
+      "path": "scripts/run_studionet_full_lifecycle.py",
+      "sha256": "d61be649b1e7f5185c318a16089d00eadc7f121a89438df18cab6db548d518dc",
+      "bytes": 10970
     },
     {
       "path": "scripts/run_studionet_gate_scenario.py",
